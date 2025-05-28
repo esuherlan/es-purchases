@@ -27,8 +27,8 @@
 										<!-- <div id="nameHelp" class="form-text">
 											We'll never share your email with anyone else.
 										</div> -->
-										<div v-if="validation.title" class="mt-2 alert alert-danger">
-                                    {{ validation.title[0] }}
+										<div v-if="validation.name" class="mt-2 alert alert-danger">
+                                    {{ validation.name[0] }}
                                 </div>
 									</div>
 								</div>

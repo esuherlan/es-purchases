@@ -36,7 +36,7 @@
                                             <td>{{ department.name }}</td>
                                             <td>
                                                 <router-link :to="{name: 'department.edit', params:{id: department.id }}" class="btn btn-sm btn-primary mr-2"><i class="nav-icon bi bi-pencil"></i> Edit</router-link>
-                                                <button class="btn btn-sm btn-danger ml-1"><i class="nav-icon bi bi-trash"></i> Delete</button>
+                                                <button @click.prevent="departmentDelete(department.id)" class="btn btn-sm btn-danger ml-1" style="margin-left: 10px"><i class="nav-icon bi bi-trash"></i> Delete</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -55,22 +55,31 @@ import axios from 'axios'
 import { onMounted, ref } from 'vue'
 
 export default {
+	setup() {
+		let departments = ref([])
 
-    setup() {
-        let departments = ref([])
+		onMounted(() => {
+			axios.get('http://localhost:8000/api/department')
+			.then(response => {
+					departments.value = response.data.data
+			}).catch(error => {
+					console.log(error.response.data)
+			})
+		})
 
-        onMounted(() => {
-            axios.get('http://localhost:8000/api/department')
-            .then(response => {
-                departments.value = response.data.data
-            }).catch(error => {
-                console.log(error.response.data)
-            })
-        })
+		function departmentDelete(id) {
+			axios.delete(`http://localhost:8000/api/department/${id}`)
+			.then(() => {
+				departments.value.splice(departments.value.indexOf(id), 1);
+			}).catch(error => {
+				console.log(error.response.data)
+			})
+		}
 
-        return {
-            departments
-        }
-    }
+		return {
+			departments,
+			departmentDelete
+		}
+	}
 }
 </script>

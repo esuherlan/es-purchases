@@ -19,10 +19,10 @@
                     <div class="col-md-12">
                         <div class="card mb-4">
                             <div class="card-header">
-                                <router-link :to="{name: 'department.create'}" class="btn btn-md btn-success"><i class="nav-icon bi bi-plus-circle"></i> Add Department</router-link>
+                                <router-link :to="{name: 'department.create'}" class="btn btn-md btn-success"><i class="nav-icon bi bi-plus-circle"></i> Add New Department</router-link>
                             </div>
                             <div class="card-body p-0">
-                                <table class="table">
+                                <table class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th style="width: 10px">#</th>

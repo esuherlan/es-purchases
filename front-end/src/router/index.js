@@ -1,34 +1,56 @@
-//import vue router
 import { createRouter, createWebHistory } from 'vue-router'
 
-//define a routes
+const Dashboard = () => import('@/views/dashboard/Index.vue')
+
+const DepartmentIndex = () => import('@/views/department/Index.vue')
+const DepartmentCreate = () => import('@/views/department/Create.vue')
+const DepartmentEdit = () => import('@/views/department/Edit.vue')
+
+const ClientIndex = () => import('@/views/client/Index.vue')
+const ClientCreate = () => import('@/views/client/Create.vue')
+const ClientEdit = () => import('@/views/client/Edit.vue')
+
 const routes = [
 	{
 		path: '/',
 		name: 'dashboard.index',
-		component: () => import( /* webpackChunkName: "dashboard.index" */ '@/views/dashboard/Index.vue')
+		component: Dashboard
 	},
 	{
 		path: '/department',
 		name: 'department.index',
-		component: () => import( /* webpackChunkName: "department.index" */ '@/views/department/Index.vue')
+		component: DepartmentIndex
 	},
 	{
 		path: '/department/create',
 		name: 'department.create',
-		component: () => import( /* webpackChunkName: "department.create" */ '@/views/department/Create.vue')
+		component: DepartmentCreate
 	},
 	{
 		path: '/department/edit/:id',
 		name: 'department.edit',
-		component: () => import( /* webpackChunkName: "department.edit" */ '@/views/department/Edit.vue')
+		component: DepartmentEdit
+	},
+	{
+		path: '/client',
+		name: 'client.index',
+		component: ClientIndex
+	},
+	{
+		path: '/client/create',
+		name: 'client.create',
+		component: ClientCreate
+	},
+	{
+		path: '/client/edit/:id',
+		name: 'client.edit',
+		component: ClientEdit
 	}
 ]
 
-//create router
 const router = createRouter({
 	history: createWebHistory(),
-	routes  // config routes
+	routes
 })
 
 export default router

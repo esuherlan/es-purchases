@@ -16,7 +16,9 @@ class ClientController extends Controller
 	public function index()
 	{
 		//get data from table clients
-		$clients = Client::latest()->get();
+		// $clients = Client::latest()->get();
+		$clients = Client::select('clients.*', 'departments.name AS department_name')
+								->join('departments', 'departments.id', '=', 'clients.department_id')->get();
 
 		//make response JSON
 		return response()->json([

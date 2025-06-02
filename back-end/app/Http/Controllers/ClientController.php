@@ -36,10 +36,11 @@ class ClientController extends Controller
 	 */
 	public function show($id)
 	{
-		//find client by ID
-		$client = Client::findOrfail($id);
+		$client = Client::select('clients.*', 'departments.name AS department_name')
+								->join('departments', 'departments.id', '=', 'clients.department_id')
+								->where('clients.id', '=', $id)
+								->get();
 
-		//make response JSON
 		return response()->json([
 			'success' => true,
 			'message' => 'Detail Data Client',

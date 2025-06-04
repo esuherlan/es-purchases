@@ -1,47 +1,45 @@
 <template>
-	<main class="app-main">
-		<div class="app-content-header">
+	<div class="content-wrapper">
+		<section class="content-header">
 			<div class="container-fluid">
-				<div class="row">
-					<!-- <div class="col-sm-6"><h3 class="mb-0">Add New Department</h3></div> -->
+				<div class="row mb-2">
 					<div class="col-sm-12">
-						<ol class="breadcrumb float-sm-end">
+						<ol class="breadcrumb float-sm-right">
 							<li class="breadcrumb-item"><a href="#">Home</a></li>
-							<li class="breadcrumb-item active" aria-current="page">Department</li>
+							<li class="breadcrumb-item active">Departments</li>
 						</ol>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="app-content">
-			<div class="container-fluid">
-				<div class="row">
+		</section>
+		<section class="content">
+      	<div class="container-fluid">
+       	 	<div class="row">
 					<div class="col-md-12">
-                	<div class="card card-primary card-outline mb-4">
-							<div class="card-header"><div class="card-title">Add New Department</div></div>
+						<div class="card card-primary card-outline">
+							<div class="card-header">
+								<h3 class="card-title">Edit Department</h3>
+							</div>
 							<form @submit.prevent="update">
 								<div class="card-body">
-									<div class="mb-3">
-										<label for="exampleInputEmail1" class="form-label">Department Name</label>
-										<input type="text" class="form-control" name="name" id="name" v-model="department.name" aria-describedby="nameHelp"/>
-										<!-- <div id="nameHelp" class="form-text">
-											We'll never share your email with anyone else.
-										</div> -->
-										<div v-if="validation.name" class="mt-2 alert alert-danger">
-                                    {{ validation.name[0] }}
-                                </div>
+									<div class="form-group">
+										<label for="inputName">Department Name</label>
+										<input type="text" class="form-control" name="name" id="name" v-model="department.name" aria-describedby="inputName"/>
+										<div v-if="validation.name" class="alert alert-danger mt-2">
+											<i class="icon fas fa-ban"></i> {{ validation.name[0] }}
+										</div>
 									</div>
 								</div>
 								<div class="card-footer">
-									<button type="submit" class="btn btn-primary">Submit</button>
+									<button type="submit" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Update</button>
 								</div>
 							</form>
-                	</div>
-              	</div>
-				</div>
+						</div>
+					</div>
+			 	</div>
 			</div>
-		</div>
-   </main>
+		</section>
+	</div>
 </template>
 
 <script>

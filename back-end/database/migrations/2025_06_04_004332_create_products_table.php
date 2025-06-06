@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('name')->nullable();
             $table->string('unit');
             $table->string('location');
-            $table->integer('quantity');
+            $table->integer('stock');
             $table->text('description')->nullable();
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();

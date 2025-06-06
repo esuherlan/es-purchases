@@ -15,7 +15,9 @@ class ProductController extends Controller
 	 */
 	public function index()
 	{
-		$products = Product::latest()->get();
+		$products = Product::where('is_deleted', 0)
+							->latest()
+							->get();
 
 		return response()->json([
 			'success' => true,
@@ -54,7 +56,7 @@ class ProductController extends Controller
 			'name'   			=> 'required',
 			'unit'   			=> 'required',
 			'location'			=> 'required',
-			'quantity'			=> 'required',
+			'stock'				=> 'required',
 		]);
 		
 		if ($validator->fails()) {
@@ -66,7 +68,7 @@ class ProductController extends Controller
 			'name'     			=> $request->name,
 			'unit'     			=> $request->unit,
 			'location'     	=> $request->location,
-			'quantity'     	=> $request->quantity,
+			'stock'     		=> $request->stock,
 			'description'     => $request->description,
 		]);
 
@@ -98,7 +100,7 @@ class ProductController extends Controller
 			'name'   			=> 'required',
 			'unit'   			=> 'required',
 			'location'			=> 'required',
-			'quantity'			=> 'required',
+			'stock'				=> 'required',
 		]);
 		
 		if ($validator->fails()) {
@@ -113,7 +115,7 @@ class ProductController extends Controller
 				'name'     			=> $request->name,
 				'unit'     			=> $request->unit,
 				'location'     	=> $request->location,
-				'quantity'     	=> $request->quantity,
+				'stock'     		=> $request->stock,
 				'description'     => $request->description,
 			]);
 

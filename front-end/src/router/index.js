@@ -14,6 +14,10 @@ const PurchaseIndex = () => import('@/views/purchase/Index.vue')
 const PurchaseCreate = () => import('@/views/purchase/Create.vue')
 const PurchaseEdit = () => import('@/views/purchase/Edit.vue')
 
+const ProductIndex = () => import('@/views/product/Index.vue')
+const ProductCreate = () => import('@/views/product/Create.vue')
+const ProductEdit = () => import('@/views/product/Edit.vue')
+
 const routes = [
 	{
 		path: '/',
@@ -64,6 +68,21 @@ const routes = [
 		path: '/purchase/edit/:id',
 		name: 'purchase.edit',
 		component: PurchaseEdit
+	},
+	{
+		path: '/product',
+		name: 'product.index',
+		component: ProductIndex
+	},
+	{
+		path: '/product/create',
+		name: 'product.create',
+		component: ProductCreate
+	},
+	{
+		path: '/product/edit/:id',
+		name: 'product.edit',
+		component: ProductEdit
 	}
 ]
 

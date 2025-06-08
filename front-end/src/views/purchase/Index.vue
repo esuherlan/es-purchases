@@ -1,25 +1,27 @@
 <template>
-	<main class="app-main">
-		<div class="app-content-header">
-			<div class="container-fluid">
-				<div class="row">
-				<div class="col-sm-6"><h3 class="mb-0">Purchase Lists</h3></div>
-				<div class="col-sm-6">
-					<ol class="breadcrumb float-sm-end">
-						<li class="breadcrumb-item"><a href="#">Home</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Purchase</li>
-					</ol>
-				</div>
-				</div>
-			</div>
-		</div>
-		<div class="app-content">
+	<div class="content-wrapper">
+    	<section class="content-header">
+      	<div class="container-fluid">
+        		<div class="row mb-2">
+          		<div class="col-sm-6">
+            		<h1>Purchases</h1>
+          		</div>
+          		<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="#">Home</a></li>
+							<li class="breadcrumb-item active">Purchases</li>
+						</ol>
+          		</div>
+        		</div>
+      	</div>
+    	</section>
+		<section class="content">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card mb-4">
+						<div class="card card-primary card-outline">
 							<div class="card-header">
-								<router-link :to="{name: 'purchase.create'}" class="btn btn-sm btn-success"><i class="nav-icon bi bi-plus-circle"></i> Add New Purchase</router-link>
+								<router-link :to="{name: 'purchase.create'}" class="btn btn-sm btn-success"><i class="fas fa-plus-circle"></i> Add New Purchase</router-link>
 							</div>
 							<div class="card-body p-0">
 								<table class="table table-striped">
@@ -50,8 +52,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-   </main>
+		</section>
+  	</div>
 </template>
 
 <script>

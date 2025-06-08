@@ -18,6 +18,7 @@ class CreateClientsTable extends Migration
             $table->string('nik');
             $table->string('name');
             $table->integer('department_id');
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

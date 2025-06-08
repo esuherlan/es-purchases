@@ -15,10 +15,10 @@ class DepartmentController extends Controller
 	 */
 	public function index()
 	{
-		//get data from table departments
-		$departments = Department::latest()->get();
+		$departments = Department::where('is_deleted', 0)
+		->latest()
+		->get();
 
-		//make response JSON
 		return response()->json([
 			'success' => true,
 			'message' => 'List Data Departments',
@@ -34,10 +34,8 @@ class DepartmentController extends Controller
 	 */
 	public function show($id)
 	{
-		//find department by ID
 		$department = Department::findOrfail($id);
 
-		//make response JSON
 		return response()->json([
 			'success' => true,
 			'message' => 'Detail Data Department',
@@ -53,23 +51,19 @@ class DepartmentController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		//set validation
 		$validator = Validator::make($request->all(), [
 			'name'   => 'required',
 		]);
 		
-		//response error validation
 		if ($validator->fails()) {
 			return response()->json($validator->errors(), 400);
 		}
 
-		//save to database
 		$department = Department::create([
 			'name'     => $request->name
 		]);
 
-		//success save to database
-		if($department) {
+		if ($department) {
 			return response()->json([
 				'success' => true,
 				'message' => 'Department Created',
@@ -77,7 +71,6 @@ class DepartmentController extends Controller
 			], 201);
 		} 
 
-		//failed save to database
 		return response()->json([
 			'success' => false,
 			'message' => 'Department Failed to Save',
@@ -93,21 +86,17 @@ class DepartmentController extends Controller
 	 */
 	public function update(Request $request, Department $department)
 	{
-		//set validation
 		$validator = Validator::make($request->all(), [
 			'name'   => 'required',
 		]);
 		
-		//response error validation
 		if ($validator->fails()) {
 			return response()->json($validator->errors(), 400);
 		}
 
-		//find department by ID
 		$department = Department::findOrFail($department->id);
 
 		if ($department) {
-			//update department
 			$department->update([
 				'name'     => $request->name,
 			]);
@@ -119,7 +108,6 @@ class DepartmentController extends Controller
 			], 200);
 		}
 
-		//data department not found
 		return response()->json([
 			'success' => false,
 			'message' => 'Department Not Found',
@@ -134,12 +122,13 @@ class DepartmentController extends Controller
 	 */
 	public function destroy($id)
 	{
-		//find department by ID
 		$department = Department::findOrfail($id);
 
-		if($department) {
-			//delete department
-			$department->delete();
+		if ($department) {
+			// soft delete (not hard delete data from db, just change the is_deleted status)
+			$department->update([
+				'is_deleted' => true
+			]);
 
 			return response()->json([
 				'success' => true,
@@ -147,7 +136,6 @@ class DepartmentController extends Controller
 			], 200);
 		}
 
-		//data department not found
 		return response()->json([
 			'success' => false,
 			'message' => 'Department Not Found',

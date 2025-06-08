@@ -15,12 +15,11 @@ class ClientController extends Controller
 	 */
 	public function index()
 	{
-		//get data from table clients
-		// $clients = Client::latest()->get();
 		$clients = Client::select('clients.*', 'departments.name AS department_name')
-								->join('departments', 'departments.id', '=', 'clients.department_id')->get();
+								->join('departments', 'departments.id', '=', 'clients.department_id')
+								->where('clients.is_deleted', 0)
+								->get();
 
-		//make response JSON
 		return response()->json([
 			'success' => true,
 			'message' => 'List Data Clients',
@@ -56,27 +55,23 @@ class ClientController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		//set validation
 		$validator = Validator::make($request->all(), [
 			'nik'    			=> 'required',
 			'name'   			=> 'required',
 			'department_id'   => 'required',
 		]);
 		
-		//response error validation
 		if ($validator->fails()) {
 			return response()->json($validator->errors(), 400);
 		}
 
-		//save to database
 		$client = Client::create([
 			'nik'     => $request->nik,
 			'name'     => $request->name,
 			'department_id'     => $request->department_id
 		]);
 
-		//success save to database
-		if($client) {
+		if ($client) {
 			return response()->json([
 				'success' => true,
 				'message' => 'Client Created',
@@ -84,7 +79,6 @@ class ClientController extends Controller
 			], 201);
 		} 
 
-		//failed save to database
 		return response()->json([
 			'success' => false,
 			'message' => 'Client Failed to Save',
@@ -100,23 +94,19 @@ class ClientController extends Controller
 	 */
 	public function update(Request $request, client $client)
 	{
-		//set validation
 		$validator = Validator::make($request->all(), [
 			'nik'   				=> 'required',
 			'name'   			=> 'required',
 			'department_id'   => 'required'
 		]);
 		
-		//response error validation
 		if ($validator->fails()) {
 			return response()->json($validator->errors(), 400);
 		}
 
-		//find client by ID
 		$client = Client::findOrFail($client->id);
 
 		if ($client) {
-			//update client
 			$client->update([
 				'nik'     			=> $request->nik,
 				'name'     			=> $request->name,
@@ -130,7 +120,6 @@ class ClientController extends Controller
 			], 200);
 		}
 
-		//data client not found
 		return response()->json([
 			'success' => false,
 			'message' => 'Client Not Found',
@@ -145,12 +134,13 @@ class ClientController extends Controller
 	 */
 	public function destroy($id)
 	{
-		//find client by ID
 		$client = Client::findOrfail($id);
 
-		if($client) {
-			//delete client
-			$client->delete();
+		if ($client) {
+			// soft delete (not hard delete data from db, just change the is_deleted status)
+			$client->update([
+				'is_deleted' => true
+			]);
 
 			return response()->json([
 				'success' => true,
@@ -158,7 +148,6 @@ class ClientController extends Controller
 			], 200);
 		}
 
-		//data client not found
 		return response()->json([
 			'success' => false,
 			'message' => 'Client Not Found',

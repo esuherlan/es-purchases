@@ -1,58 +1,61 @@
 <template>
-	<main class="app-main">
-		<div class="app-content-header">
+	<div class="content-wrapper">
+		<section class="content-header">
 			<div class="container-fluid">
-				<div class="row">
+				<div class="row mb-2">
 					<div class="col-sm-12">
-						<ol class="breadcrumb float-sm-end">
+						<ol class="breadcrumb float-sm-right">
 							<li class="breadcrumb-item"><a href="#">Home</a></li>
-							<li class="breadcrumb-item active" aria-current="page">Clients</li>
+							<li class="breadcrumb-item active">Departments</li>
 						</ol>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="app-content">
-			<div class="container-fluid">
-				<div class="row">
+		</section>
+		<section class="content">
+      	<div class="container-fluid">
+       	 	<div class="row">
 					<div class="col-md-12">
-                	<div class="card card-primary card-outline mb-4">
+						<div class="card card-primary card-outline">
 							<div class="card-header"><div class="card-title">Add New Client</div></div>
                      <form @submit.prevent="submitForm">
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="inputNIK" class="form-label">NIK</label>
-										<input type="text" class="form-control" name="client_nik" id="client_nik" v-model="inputNik">
-										<!-- <div v-if="validation.name" class="mt-2 alert alert-danger">
-											{{ validation.nik[0] }}
-										</div> -->
+										<input type="text" :class="validations.nik ? 'form-control is-invalid' : 'form-control'" v-model="inputNik">
+										<span v-if="validations.nik" class="error invalid-feedback">
+											{{ validations.nik[0] }}
+										</span>
 									</div>
 									<div class="mb-3">
 										<label for="inputName" class="form-label">Client Name</label>
-										<input type="text" class="form-control" name="client_name" id="client_name" v-model="inputName">
-										<!-- <div v-if="validation.name" class="mt-2 alert alert-danger">
-											{{ validation.name[0] }}
-										</div> -->
+										<input type="text" :class="validations.name ? 'form-control is-invalid' : 'form-control'" v-model="inputName">
+										<span v-if="validations.name" class="error invalid-feedback">
+											{{ validations.name[0] }}
+										</span>
 									</div>
 									<div class="mb-3">
 										<label for="selectDepartment" class="form-label">Department</label>
-										<select class="form-select" v-model="selectedOption">
-											<option v-for="option in options" :value="option.id" :key="option.id">
+										<select :class="validations.department_id ? 'form-select is-invalid' : 'form-select'" v-model="selectedOption">
+											<option v-for="option in departments" :value="option.id" :key="option.id">
 												{{ option.name }}
 											</option>
 										</select>
+										<span v-if="validations.department_id" class="error invalid-feedback">
+											{{ validations.department_id[0] }}
+										</span>
 									</div>
 								</div>
 								<div class="card-footer">
-									<button type="submit" class="btn btn-primary"><i class="nav-icon bi bi-save"></i> Save</button>
+									<button type="submit" class="btn btn-primary"><i class="fas fa-share-square"></i> Save</button>
 								</div>                        
                      </form>
                   </div>
-              	</div>
-				</div>
+					</div>
+			 	</div>
 			</div>
-		</div>
-   </main>
+		</section>
+	</div>
 </template>
 
 <script>
@@ -63,22 +66,23 @@ import axios from 'axios';
 export default {
    data() {
 		return {
-			options: [],
+			validations: [],
+			departments: [],
 			selectedOption: null,
 			inputNik: '',
 			inputName: ''
       };
    },
    mounted() {
-      this.fetchOptions();
+      this.fetchDepartments();
    },
    methods: {
-		async fetchOptions() {
+		async fetchDepartments() {
 			try {
-				const response = await axios.get('http://localhost:8000/api/department');
-				this.options = response.data.data;
+				const response = await axios.get('http://localhost:8000/api/department')
+				this.departments = response.data.data
 			} catch (error) {
-				console.error('Error fetching options:', error);
+				console.error('Error fetching departments:', error)
 			}
       },
       async submitForm() {
@@ -87,10 +91,11 @@ export default {
 					nik: this.inputNik,
 					name: this.inputName,
 					department_id: this.selectedOption
-				});
-				this.$router.push({ name: 'client.index' });
+				})
+
+				this.$router.push({ name: 'client.index' })
 			} catch (error) {
-				console.error('Error submitting form:', error);
+				this.validations = error.response.data
 			}
       },
    },

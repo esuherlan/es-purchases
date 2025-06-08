@@ -1,22 +1,22 @@
 <template>
-	<main class="app-main">
-		<div class="app-content-header">
+	<div class="content-wrapper">
+		<section class="content-header">
 			<div class="container-fluid">
-				<div class="row">
+				<div class="row mb-2">
 					<div class="col-sm-12">
-						<ol class="breadcrumb float-sm-end">
+						<ol class="breadcrumb float-sm-right">
 							<li class="breadcrumb-item"><a href="#">Home</a></li>
-							<li class="breadcrumb-item active" aria-current="page">Purchases</li>
+							<li class="breadcrumb-item active">Departments</li>
 						</ol>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="app-content">
-			<div class="container-fluid">
-				<div class="row">
+		</section>
+		<section class="content">
+      	<div class="container-fluid">
+       	 	<div class="row">
 					<div class="col-md-12">
-                	<div class="card card-primary card-outline mb-4">
+						<div class="card card-primary card-outline">
 							<div class="card-header"><div class="card-title">Add New Purchase</div></div>
                      <form @submit.prevent="submitForm">
 								<div class="card-body">
@@ -50,11 +50,11 @@
 								</div>                        
                      </form>
                   </div>
-              	</div>
-				</div>
+					</div>
+			 	</div>
 			</div>
-		</div>
-   </main>
+		</section>
+	</div>
 </template>
 
 <script>

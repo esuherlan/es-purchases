@@ -21,7 +21,7 @@
 					<div class="col-md-12">
 						<div class="card card-primary card-outline">
 							<div class="card-header">
-                			<router-link :to="{name: 'department.create'}" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add New Department</router-link>
+                			<router-link :to="{name: 'department.create'}" class="btn btn-sm btn-success"><i class="fas fa-plus-circle"></i> Add New Department</router-link>
               			</div>
 							<div class="card-body p-0">
 								<table class="table table-striped">

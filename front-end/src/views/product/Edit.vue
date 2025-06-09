@@ -20,49 +20,47 @@
 							<div class="card-header">
 								<h3 class="card-title">Edit Product</h3>
 							</div>
-							<form @submit.prevent="update">
+							<form @submit.prevent="updateProduct">
 								<div class="card-body">
+									<input type="hidden" :value="productId">
 									<div class="form-group">
 										<label for="inputSerialNumber">Serial Number</label>
-										<input type="text" class="form-control" v-model="product.serial_number" aria-describedby="inputSerialNumber">
-										<div v-if="validation.serial_number" class="alert alert-danger mt-2">
-											<i class="icon fas fa-ban"></i> {{ validation.serial_number[0] }}
-										</div>
+										<input type="text" :class="validations.serial_number ? 'form-control is-invalid' : 'form-control'" v-model="productSerialNumber" aria-describedby="inputSerialNumber">
+										<span v-if="validations.serial_number" class="error invalid-feedback">
+											{{ validations.serial_number[0] }}
+										</span>
 									</div>
 									<div class="form-group">
 										<label for="inputName">Product Name</label>
-										<input type="text" class="form-control" v-model="product.name" aria-describedby="inputName"/>
-										<div v-if="validation.name" class="alert alert-danger mt-2">
-											<i class="icon fas fa-ban"></i> {{ validation.name[0] }}
-										</div>
+										<input type="text" :class="validations.name ? 'form-control is-invalid' : 'form-control'" v-model="productName" aria-describedby="inputName">
+										<span v-if="validations.name" class="error invalid-feedback">
+											{{ validations.name[0] }}
+										</span>
 									</div>
 									<div class="form-group">
 										<label for="inputLocation">Location</label>
-										<input type="text" class="form-control" v-model="product.location" aria-describedby="inputLocation">
-										<div v-if="validation.location" class="alert alert-danger mt-2">
-											<i class="icon fas fa-ban"></i> {{ validation.location[0] }}
-										</div>
+										<input type="text" :class="validations.location ? 'form-control is-invalid' : 'form-control'" v-model="productLocation" aria-describedby="inputLocation">
+										<span v-if="validations.location" class="error invalid-feedback">
+											{{ validations.location[0] }}
+										</span>
 									</div>
 									<div class="form-group">
 										<label for="inputStock">Stock</label>
-										<input type="text" class="form-control" v-model="product.stock" aria-describedby="inputStock">
-										<div v-if="validation.stock" class="alert alert-danger mt-2">
-											<i class="icon fas fa-ban"></i> {{ validation.stock[0] }}
-										</div>
+										<input type="text" :class="validations.stock ? 'form-control is-invalid' : 'form-control'" v-model="productStock" aria-describedby="inputStock">
+										<span v-if="validations.stock" class="error invalid-feedback">
+											{{ validations.stock[0] }}
+										</span>
 									</div>
 									<div class="form-group">
 										<label for="inputUnit">Unit</label>
-										<input type="text" class="form-control" v-model="product.unit" aria-describedby="inputUnit">
-										<div v-if="validation.unit" class="alert alert-danger mt-2">
-											<i class="icon fas fa-ban"></i> {{ validation.unit[0] }}
-										</div>
+										<input type="text" :class="validations.unit ? 'form-control is-invalid' : 'form-control'" v-model="productUnit" aria-describedby="inputUnit">
+										<span v-if="validations.unit" class="error invalid-feedback">
+											{{ validations.unit[0] }}
+										</span>
 									</div>
 									<div class="form-group">
 										<label for="inputDescription">Description</label>
-										<textarea class="form-control" rows="4" v-model="product.description"></textarea>
-										<div v-if="validation.stock" class="alert alert-danger mt-2">
-											<i class="icon fas fa-ban"></i> {{ validation.stock[0] }}
-										</div>
+										<textarea class="form-control" rows="4" v-model="productDescription"></textarea>
 									</div>
 								</div>
 								<div class="card-footer">
@@ -82,6 +80,61 @@ import { reactive, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 
+export default {
+   data() {
+		return {
+			validations: ref([]),
+			departments: [],
+			validations: [],
+			productId: '',
+			productSerialNumber: '',
+			productName: '',
+			productUnit: '',
+			productStock: '',
+			productLocation: '',
+			productDescription: '',
+      };
+   },
+   mounted() {
+      this.fetchProduct()
+   },
+   methods: {
+		async fetchProduct() {
+			try {
+				const route = useRoute()
+				const response = await axios.get(`http://localhost:8000/api/product/${route.params.id}`);
+				
+				this.productId = response.data.data.id
+				this.productSerialNumber = response.data.data.serial_number
+				this.productName = response.data.data.name
+				this.productUnit = response.data.data.unit
+				this.productStock = response.data.data.stock
+				this.productLocation = response.data.data.location
+				this.productDescription = response.data.data.description
+			} catch (error) {
+				console.error('Error fetching product:', error)
+			}
+		},
+      async updateProduct() {
+			try {
+				await axios.put(`http://localhost:8000/api/product/${this.productId}`, {
+					serial_number: this.productSerialNumber,
+					name: this.productName,
+					unit: this.productUnit,
+					stock: this.productStock,
+					location: this.productLocation,
+					description: this.productDescription
+				})
+
+				this.$router.push({ name: 'product.index' })
+			} catch (error) {
+				this.validations = error.response.data
+			}
+      },
+   },
+}
+
+/*
 export default {
 	setup() {
 		const product = reactive({
@@ -143,4 +196,5 @@ export default {
 		}
 	}
 }
+*/
 </script>
